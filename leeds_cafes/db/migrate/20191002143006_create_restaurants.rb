@@ -1,6 +1,6 @@
-class CreateStreetCafes < ActiveRecord::Migration[5.2]
+class CreateRestaurants < ActiveRecord::Migration[5.2]
   def change
-    create_table :street_cafes do |t|
+    create_table :restaurants do |t|
       t.string :cafe_name
       t.string :street_address
       t.string :post_code
