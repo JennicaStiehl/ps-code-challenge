@@ -7,5 +7,10 @@ namespace :import do
       Restaurant.create(cafe_name: row["Cafe Name"],street_address: row["Street Address"], post_code: row["Post Code"], number_of_chairs: row["Number of Chairs"] )
     end
   end
-
+  # desc "update records"
+  # task add_category: :environment do
+  #   Restaurant.update(category: 'ls1 small')
+  #   .where(post_code: 'LS1')
+  #   .where('number_of_chairs < 10')
+  # end
 end
