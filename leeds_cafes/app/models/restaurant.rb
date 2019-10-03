@@ -1,17 +1,21 @@
 class Restaurant < ApplicationRecord
   validates_presence_of :post_code
 
-  def self.find_by_post_code(post_code)
-    where("post_code like '#{post_code} %'")
+  def self.find_by_filter(value, filter_by)
+    if filter_by == 'post_code'
+      where("#{filter_by} like '#{value} %'")
+    elsif filter_by == 'category'
+      where("#{filter_by} = '#{value}'")
+    end
   end
 
-  def self.total_chairs(post_code)
-      cafes = self.find_by_post_code(post_code)
+  def self.total_chairs(value, filter_by)
+      cafes = self.find_by_filter(value, filter_by)
       cafes.sum(:number_of_chairs)
   end
 
-  def self.total_places(post_code)
-    cafes = self.find_by_post_code(post_code)
+  def self.total_places(value, filter_by)
+    cafes = self.find_by_filter(value, filter_by)
     cafes.count(:cafe_name)
   end
 
@@ -19,12 +23,12 @@ class Restaurant < ApplicationRecord
     sum(:number_of_chairs)
   end
 
-  def self.chairs_pct(post_code)
-    ((self.total_chairs(post_code).to_f / self.all_chairs)*100).round(2)
+  def self.chairs_pct(value, filter_by)
+    ((self.total_chairs(value, filter_by).to_f / self.all_chairs)*100).round(2)
   end
 
-  def self.max_chairs(post_code)
-    cafes = self.find_by_post_code(post_code)
+  def self.max_chairs(value, filter_by)
+    cafes = self.find_by_filter(value, filter_by)
     cafes.select("restaurants.*, coalesce(max(number_of_chairs),0) as most_chairs")
     .group("restaurants.id")
     .order("most_chairs desc")
@@ -44,10 +48,10 @@ class Restaurant < ApplicationRecord
   def self.update_ls2
     to_update = self.find_ls2
     to_update.each do |cafe|
-      if cafe.number_of_chairs < (self.total_chairs('LS2') / 2)
-        cafe.update(category: 'ls2 small')
+      if cafe.number_of_chairs < (self.total_chairs('LS2', 'post_code') / 2)
+        cafe.update(category: 'ls2_small')
       else
-        cafe.update(category:  'ls2 large')
+        cafe.update(category:  'ls2_large')
       end
     end
   end
@@ -72,7 +76,7 @@ class Restaurant < ApplicationRecord
   def self.update_ls1_small
     results = ActiveRecord::Base.connection.execute("
       UPDATE restaurants
-      SET category = 'ls1 small'
+      SET category = 'ls1_small'
       WHERE post_code like 'LS1 %' and number_of_chairs < 10;
       ")
   end
@@ -80,7 +84,7 @@ class Restaurant < ApplicationRecord
   def self.update_ls1_medium
     results = ActiveRecord::Base.connection.execute("
       UPDATE restaurants
-      SET category = 'ls1 medium'
+      SET category = 'ls1_medium'
       WHERE post_code like 'LS1 %' and number_of_chairs >= 10 and number_of_chairs < 100;
       ")
   end
@@ -88,7 +92,7 @@ class Restaurant < ApplicationRecord
   def self.update_ls1_large
     results = ActiveRecord::Base.connection.execute("
       UPDATE restaurants
-      SET category = 'ls1 large'
+      SET category = 'ls1_large'
       WHERE post_code like 'LS1 %' and number_of_chairs >= 100;
       ")
   end
