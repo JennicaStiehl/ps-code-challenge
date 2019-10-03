@@ -1,5 +1,5 @@
 require 'rails_helper'
-RSpec.describe 'when vsiting the post_code index page', type: :feature do
+RSpec.describe 'when vsiting the category index page', type: :feature do
   before :each do
     Restaurant.destroy_all
     @all_bar_one_1 = Restaurant.create( id: 1, cafe_name: "All Bar One", street_address: "27 East Parade", post_code: "LS1 5BN", number_of_chairs: 20, category: nil, created_at: "2019-10-02 19:41:19", updated_at: "2019-10-02 19:41:19")
@@ -14,22 +14,28 @@ RSpec.describe 'when vsiting the post_code index page', type: :feature do
     @black_house = Restaurant.create( id: 10, cafe_name: "Black House Grill", street_address: "31 - 33 East Parade", post_code: "LS1 5PS", number_of_chairs: 60, category: nil, created_at: "2019-10-02 19:41:19", updated_at: "2019-10-02 19:41:19")
     Restaurant.update_category
   end
-  it 'displays only cafes in the specified postal code' do
-    visit '/restaurants/post_code/LS1'
-
-    expect(page).to have_content(@all_bar_one_1.cafe_name)
-    expect(page).to have_content(@bagel_nash_1.cafe_name)
+  it 'displays only cafes in the specified category' do
+    Restaurant.update_category
+    visit '/restaurants/category/ls1_small'
+save_and_open_page
+    expect(Restaurant.find_by_filter('ls1_small', 'category').count).to eq(3)
     expect(page).to have_content(@barburrito.cafe_name)
-    expect(page).to have_content(@bella_italia.cafe_name)
+    expect(page).to have_content(@bhs.cafe_name)
+    expect(page).to have_content(@barburrito.street_address)
+    expect(page).to have_content(@bhs.street_address)
     expect(page).to_not have_content(@all_bar_one_2.street_address)
   end
   it 'displays correct statistics for the post code named' do
-    visit '/restaurants/post_code/LS1'
+    Restaurant.update_category
+    visit '/restaurants/category/ls1_medium'
 
-    expect(Restaurant.find_by_filter('LS1', 'post_code').count).to eq(9)
-    expect(Restaurant.total_chairs('LS1', 'post_code')).to eq(184)
-    expect(Restaurant.total_places('LS1', 'post_code')).to eq(9)
-    expect(Restaurant.chairs_pct('LS1', 'post_code')).to eq(56.79)
-    expect(page).to have_content("Black House Grill - 60")
+    expect(Restaurant.find_by_filter('ls1_medium', 'category').count).to eq(6)
+    expect(Restaurant.total_chairs('ls1_medium', 'category')).to eq(164)
+    expect(Restaurant.total_places('ls1_medium', 'category')).to eq(6)
+    expect(page).to have_content(@all_bar_one_1.cafe_name)
+    expect(page).to have_content(@bagel_nash_1.cafe_name)
+    expect(page).to have_content(@bella_italia.street_address)
+    expect(page).to have_content(@bean_run.street_address)
+    expect(page).to_not have_content(@all_bar_one_2.street_address)
   end
 end

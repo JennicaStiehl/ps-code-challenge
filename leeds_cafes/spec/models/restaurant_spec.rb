@@ -19,30 +19,30 @@ describe Restaurant, type: :model do
     describe 'class methods' do
       describe '.total_chairs' do
         it 'calculates total number of seats' do
-          expect(Restaurant.total_chairs('LS2')).to eq(385)
-          expect(Restaurant.total_chairs('LS1')).to eq(126)
-          expect(Restaurant.total_chairs('LS13')).to eq(20)
+          expect(Restaurant.total_chairs('LS2', 'post_code')).to eq(385)
+          expect(Restaurant.total_chairs('LS1', 'post_code')).to eq(126)
+          expect(Restaurant.total_chairs('LS13', 'post_code')).to eq(20)
         end
       end
       describe '.total_places' do
         it 'calculates total number of places' do
-          expect(Restaurant.total_places('LS2')).to eq(4)
-          expect(Restaurant.total_places('LS1')).to eq(3)
-          expect(Restaurant.total_places('LS13')).to eq(1)
+          expect(Restaurant.total_places('LS2', 'post_code')).to eq(4)
+          expect(Restaurant.total_places('LS1', 'post_code')).to eq(3)
+          expect(Restaurant.total_places('LS13', 'post_code')).to eq(1)
         end
       end
       describe '.chairs_pct' do
         it 'calculates total percentage of chairs by post code' do
-          expect(Restaurant.chairs_pct('LS1')).to eq(23.73)
-          expect(Restaurant.chairs_pct('LS2')).to eq(72.5)
-          expect(Restaurant.chairs_pct('LS13')).to eq(3.77)
+          expect(Restaurant.chairs_pct('LS1', 'post_code')).to eq(23.73)
+          expect(Restaurant.chairs_pct('LS2', 'post_code')).to eq(72.5)
+          expect(Restaurant.chairs_pct('LS13', 'post_code')).to eq(3.77)
         end
       end
       describe '.max_chairs' do
         it 'finds the place with the most chairs' do
-          cafe13 = Restaurant.max_chairs('LS13').map { |cafe| cafe.most_chairs }
-          cafe1 = Restaurant.max_chairs('LS1').map { |cafe| cafe.most_chairs }
-          cafe2 = Restaurant.max_chairs('LS2').map { |cafe| cafe.most_chairs }
+          cafe13 = Restaurant.max_chairs('LS13', 'post_code').map { |cafe| cafe.most_chairs }
+          cafe1 = Restaurant.max_chairs('LS1', 'post_code').map { |cafe| cafe.most_chairs }
+          cafe2 = Restaurant.max_chairs('LS2', 'post_code').map { |cafe| cafe.most_chairs }
           expect(cafe13.first).to eq(20)
           expect(cafe2.first).to eq(240)
           expect(cafe1.first).to eq(110)
@@ -52,21 +52,21 @@ describe Restaurant, type: :model do
         it 'can update the categories base on size and post code' do
           Restaurant.update_category
           @pur_pour.reload
-          expect(@pur_pour.category).to eq('ls1 small')
+          expect(@pur_pour.category).to eq('ls1_small')
           @da_pour.reload
-          expect(@da_pour.category).to eq('ls1 medium')
+          expect(@da_pour.category).to eq('ls1_medium')
           @lil_pour.reload
-          expect(@lil_pour.category).to eq('ls1 large')
+          expect(@lil_pour.category).to eq('ls1_large')
           @tea_time.reload
-          expect(@tea_time.category).to eq('ls2 small')
+          expect(@tea_time.category).to eq('ls2_small')
           @york_tea.reload
           expect(@york_tea.category).to eq('other')
           @york_and_humber.reload
-          expect(@york_and_humber.category).to eq('ls2 small')
+          expect(@york_and_humber.category).to eq('ls2_small')
           @prim_and_proper.reload
-          expect(@prim_and_proper.category).to eq('ls2 large')
+          expect(@prim_and_proper.category).to eq('ls2_large')
           @fountains_of_tea.reload
-          expect(@fountains_of_tea.category).to eq('ls2 small')
+          expect(@fountains_of_tea.category).to eq('ls2_small')
         end
       end
     end
