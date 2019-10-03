@@ -1,0 +1,25 @@
+<html>
+<head>
+</head>
+<body>
+    <h1>Post Codes in <%= @title %> </h1>
+    <h2>Statistics</h2>
+        <p> Total Chairs: <%=  @total_chairs %> </p>
+        <p> Total Places: <%=  @total_places %> </p>
+        <p> Percentage of Chairs: <%=  @chairs_pct %>% </p>
+        <% @max_chairs.each do |cafe| %>
+        <p> Most Chairs:  <%=  cafe.cafe_name%> - <%= cafe.most_chairs %></p>
+        <% end %>
+    <h2>List of Street Cafes</h2>
+    <% @cafes.each do |cafe| %>
+    <ul><h4><%= cafe.cafe_name %> </h4>
+    <ul>
+        <p>Number of Chairs: <%= cafe.number_of_chairs %> </p>
+        <p>Street Address: <%= cafe.street_address %> </p>
+        <p>Post Code: <%= cafe.post_code %> </p>
+        <p>Category: <%= cafe.category %> </p>
+      </ul>
+      </ul>
+    <% end %>
+</body>
+</html>
