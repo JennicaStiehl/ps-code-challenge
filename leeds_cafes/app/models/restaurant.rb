@@ -93,4 +93,12 @@ class Restaurant < ApplicationRecord
       ")
   end
 
+  def self.find_small_cafes
+    where("category like '%small'")
+  end
+
+  def self.find_med_lg_cafes
+    where("category like '%medium' or category like '%large'")
+  end
+
 end
