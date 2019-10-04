@@ -3,8 +3,10 @@
 This app takes data from Leeds and organizes it into categories and performs calculations on it.
 ## Notes
 Some how every time I named the table 'street_cafes', ActiveRecord would look for 'street_caves' and nothing would function properly, so I renamed the table to 'restaurants'.
+This is my first time testing rake tasks and I haven't figured out what it is about the random order of tests that sometimes causes two of the rake task tests to fail.
 ## Next Steps
 Refactor the update methods into a module or rake task.
+Nail down rake task tests.
 ## Specifications
 ### Testing
 RSpec
