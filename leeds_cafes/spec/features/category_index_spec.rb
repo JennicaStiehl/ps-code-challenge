@@ -17,7 +17,7 @@ RSpec.describe 'when vsiting the category index page', type: :feature do
   it 'displays only cafes in the specified category' do
     Restaurant.update_category
     visit '/restaurants/category/ls1_small'
-save_and_open_page
+
     expect(Restaurant.find_by_filter('ls1_small', 'category').count).to eq(3)
     expect(page).to have_content(@barburrito.cafe_name)
     expect(page).to have_content(@bhs.cafe_name)
