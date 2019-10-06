@@ -42,12 +42,12 @@ Number four was verified with a feature test called post_code_index_spec. In the
 [x] Write a Rails script to categorize the cafes and write the result to the category according to the rules:[provide the script]
 
 If the Post Code is of the LS1 prefix type:
-# of chairs less than 10: category = 'ls1 small'
-# of chairs greater than or equal to 10, less than 100: category = 'ls1 medium'
-# of chairs greater than or equal to 100: category = 'ls1 large'
+-of chairs less than 10: category = 'ls1 small'
+-of chairs greater than or equal to 10, less than 100: category = 'ls1 medium'
+-of chairs greater than or equal to 100: category = 'ls1 large'
 If the Post Code is of the LS2 prefix type:
-# of chairs below the 50th percentile for ls2: category = 'ls2 small'
-# of chairs above the 50th percentile for ls2: category = 'ls2 large'
+-of chairs below the 50th percentile for ls2: category = 'ls2 small'
+-of chairs above the 50th percentile for ls2: category = 'ls2 large'
 For Post Code is something else:
 category = 'other'
 [x] Please share any tests you wrote for #5
