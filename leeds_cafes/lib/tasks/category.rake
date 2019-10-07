@@ -7,16 +7,16 @@ class CategoryOutput
 end
 
 namespace :category do
-  desc "categorizes each cafe based on size and location"
-  CategoryOutput.banner "Category update: add categories in progress."
-    task add_categories: :environment do
-      cafes = Restaurant.where("post_code like 'LS1 %' and number_of_chairs < 10")
-      cafes.update_all "category = 'ls1 small'"
-      CategoryOutput.banner "Category update: add categories finished."
-    end
+  # desc "categorizes each cafe based on size and location"
+  # CategoryOutput.banner "Category update: add categories in progress."
+  #   task add_categories: :environment do
+  #     cafes = Restaurant.where("post_code like 'LS1 %' and number_of_chairs < 10")
+  #     cafes.update_all "category = 'ls1 small'"
+  #     CategoryOutput.banner "Category update: add categories finished."
+  #   end
 
   desc "removes all cafes categorized as small from the database and into a new file"
-  task remove_small_cafes: :environment do 
+  task remove_small_cafes: :environment do
     CategoryOutput.banner "Category update: remove small cafes in progress."
     file = './lib/assets/small_cafes.csv'
     Restaurant.update_category

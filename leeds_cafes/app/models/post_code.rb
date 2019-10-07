@@ -1,5 +1,4 @@
 class PostCode < ApplicationRecord
-  belongs_to :data
   self.primary_key = 'pc_id'
 
   def self.refresh

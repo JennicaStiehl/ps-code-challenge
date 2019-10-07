@@ -42,6 +42,25 @@ CREATE TABLE public.restaurants (
 
 
 --
+-- Name: post_codes; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.post_codes AS
+ SELECT restaurants.post_code,
+    restaurants.id AS "pc id",
+    max(restaurants.number_of_chairs) AS "Most Chairs",
+    sum(restaurants.number_of_chairs) AS "Total Chairs",
+    count(restaurants.id) AS "Total Places",
+    ( SELECT sum(restaurants_1.number_of_chairs) AS sum
+           FROM public.restaurants restaurants_1) AS "Total Chairs in Leeds",
+    (sum(restaurants.number_of_chairs) / ( SELECT sum(restaurants_1.number_of_chairs) AS sum
+           FROM public.restaurants restaurants_1)) AS "Percent Leeds Chairs"
+   FROM public.restaurants
+  GROUP BY restaurants.post_code, restaurants.id
+  ORDER BY restaurants.post_code, (sum(restaurants.number_of_chairs)) DESC;
+
+
+--
 -- Name: restaurants_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -107,6 +126,7 @@ ALTER TABLE ONLY public.schema_migrations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20191002143006');
+('20191002143006'),
+('20191007172046');
 
 
