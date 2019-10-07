@@ -1,5 +1,5 @@
 require 'rails_helper'
-RSpec.describe 'when vsiting the post_code sql view page', type: :feature do
+RSpec.describe 'when vsiting the category sql view page', type: :feature do
   before :each do
     Restaurant.destroy_all
     @all_bar_one_1 = Restaurant.create( id: 1, cafe_name: "All Bar One", street_address: "27 East Parade", post_code: "LS1 5BN", number_of_chairs: 20, category: nil, created_at: "2019-10-02 19:41:19", updated_at: "2019-10-02 19:41:19")
@@ -16,13 +16,13 @@ RSpec.describe 'when vsiting the post_code sql view page', type: :feature do
   end
 
   it 'displays correct statistics for the post code named' do
-    visit '/post_codes'
+    visit '/category'
 
-    expect(page).to have_content("Cafes in LS2")
-    expect(page).to have_content("Total Chairs: 140")
-    expect(page).to have_content("Total Places: 1")
-    expect(page).to have_content("Total Chairs in Leeds: 324")
-    expect(page).to have_content("Percentage of Chairs in LS2 Compared to Leeds: 43.21%")
-
+    expect(page).to have_content("Cafes in ls1_medium")
+    expect(page).to have_content("Total Chairs: 164")
+    expect(page).to have_content("Total Places: 6")
   end
 end
+# category: The category column
+# total_places: The number of places in that category
+# total_chairs: The total chairs in that category
