@@ -7,4 +7,4 @@ SELECT post_code
               , (sum(number_of_chairs) / (SELECT sum(number_of_chairs) FROM restaurants))as "Percent Leeds Chairs"
 FROM restaurants
 GROUP BY post_code, id
-ORDER BY post_code;
+ORDER BY post_code, sum(number_of_chairs) desc;
