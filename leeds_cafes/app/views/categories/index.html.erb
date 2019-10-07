@@ -1,0 +1,12 @@
+<html>
+<head>
+</head>
+<body>
+    <h1>Categories</h1>
+    <% @results.each do |result| %>
+    <h3>Cafes in <%=  result.category %> </h3>
+        <p> Total Chairs: <%=  result.Total_Chairs %> </p>
+        <p> Total Places: <%=  result.Total_Places %> </p>
+        <% end %>
+</body>
+</html>

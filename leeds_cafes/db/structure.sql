@@ -42,6 +42,22 @@ CREATE TABLE public.restaurants (
 
 
 --
+-- Name: categories; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.categories AS
+ SELECT restaurants.category,
+    sum(restaurants.number_of_chairs) AS "Total_Chairs",
+    count(restaurants.id) AS "Total_Places",
+    ( SELECT sum(restaurants_1.number_of_chairs) AS sum
+           FROM public.restaurants restaurants_1) AS "Total_Chairs_in_Leeds",
+    round(((((sum(restaurants.number_of_chairs))::numeric * 1.0) / (( SELECT sum(restaurants_1.number_of_chairs) AS sum
+           FROM public.restaurants restaurants_1))::numeric) * (100)::numeric), 2) AS "Percent_Leeds_Chairs"
+   FROM public.restaurants
+  GROUP BY restaurants.category;
+
+
+--
 -- Name: post_codes; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -131,4 +147,7 @@ SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20191002143006'),
-('20191007172046');
+('20191007172046'),
+('20191007205051');
+
+
