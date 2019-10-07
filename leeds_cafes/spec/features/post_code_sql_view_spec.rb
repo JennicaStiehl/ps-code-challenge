@@ -17,7 +17,7 @@ RSpec.describe 'when vsiting the post_code sql view page', type: :feature do
 
   it 'displays correct statistics for the post code named' do
     visit '/post_codes'
-save_and_open_page
+
     expect(Restaurant.find_by_filter('LS1', 'post_code').count).to eq(9)
     expect(Restaurant.total_chairs('LS1', 'post_code')).to eq(184)
     expect(Restaurant.total_places('LS1', 'post_code')).to eq(9)
