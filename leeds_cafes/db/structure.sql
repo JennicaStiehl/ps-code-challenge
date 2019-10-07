@@ -46,18 +46,22 @@ CREATE TABLE public.restaurants (
 --
 
 CREATE VIEW public.post_codes AS
- SELECT restaurants.post_code,
-    restaurants.id AS "pc id",
-    max(restaurants.number_of_chairs) AS "Most Chairs",
-    sum(restaurants.number_of_chairs) AS "Total Chairs",
-    count(restaurants.id) AS "Total Places",
-    ( SELECT sum(restaurants_1.number_of_chairs) AS sum
-           FROM public.restaurants restaurants_1) AS "Total Chairs in Leeds",
-    (sum(restaurants.number_of_chairs) / ( SELECT sum(restaurants_1.number_of_chairs) AS sum
-           FROM public.restaurants restaurants_1)) AS "Percent Leeds Chairs"
-   FROM public.restaurants
-  GROUP BY restaurants.post_code, restaurants.id
-  ORDER BY restaurants.post_code, (sum(restaurants.number_of_chairs)) DESC;
+ SELECT "left"((r.post_code)::text, 3) AS "Post_Code_Prefix",
+    max(mc.most_chairs) AS "Most_Chairs",
+    max((mc.cafe_name)::text) AS cafe_name,
+    sum(r.number_of_chairs) AS "Total_Chairs",
+    count(r.id) AS "Total_Places",
+    ( SELECT sum(restaurants.number_of_chairs) AS sum
+           FROM public.restaurants) AS "Total_Chairs_in_Leeds",
+    round(((((sum(r.number_of_chairs))::numeric * 1.0) / (( SELECT sum(restaurants.number_of_chairs) AS sum
+           FROM public.restaurants))::numeric) * (100)::numeric), 2) AS "Percent_Leeds_Chairs"
+   FROM (public.restaurants r
+     LEFT JOIN ( SELECT restaurants.id,
+            restaurants.cafe_name,
+            max(restaurants.number_of_chairs) AS most_chairs
+           FROM public.restaurants
+          GROUP BY restaurants.id, restaurants.cafe_name) mc ON ((r.id = mc.id)))
+  GROUP BY ("left"((r.post_code)::text, 3));
 
 
 --
@@ -128,5 +132,3 @@ SET search_path TO "$user", public;
 INSERT INTO "schema_migrations" (version) VALUES
 ('20191002143006'),
 ('20191007172046');
-
-

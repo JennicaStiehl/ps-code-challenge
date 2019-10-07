@@ -1,0 +1,15 @@
+<html>
+<head>
+</head>
+<body>
+    <h1>Statistics</h1>
+    <% @results.each do |result| %>
+    <h3>Cafes in <%=  result.Post_Code_Prefix %> </h3>
+        <p> Total Chairs: <%=  result.Total_Chairs %> </p>
+        <p> Total Places: <%=  result.Total_Places %> </p>
+        <p> Most Chairs: <%=  result.cafe_name %> - <%=  result.Total_Chairs %> </p>
+        <p> Total Chairs in Leeds: <%=  result.Total_Chairs_in_Leeds %> </p>
+        <p> Percentage of Chairs in <%=  result.Post_Code_Prefix %> Compared to Leeds: <%=  result.Percent_Leeds_Chairs %>% </p>
+        <% end %>
+</body>
+</html>

@@ -1,5 +1,5 @@
 require 'rails_helper'
-RSpec.describe 'when vsiting the post_code index page', type: :feature do
+RSpec.describe 'when vsiting the post_code sql view page', type: :feature do
   before :each do
     Restaurant.destroy_all
     @all_bar_one_1 = Restaurant.create( id: 1, cafe_name: "All Bar One", street_address: "27 East Parade", post_code: "LS1 5BN", number_of_chairs: 20, category: nil, created_at: "2019-10-02 19:41:19", updated_at: "2019-10-02 19:41:19")
@@ -14,22 +14,13 @@ RSpec.describe 'when vsiting the post_code index page', type: :feature do
     @black_house = Restaurant.create( id: 10, cafe_name: "Black House Grill", street_address: "31 - 33 East Parade", post_code: "LS1 5PS", number_of_chairs: 60, category: nil, created_at: "2019-10-02 19:41:19", updated_at: "2019-10-02 19:41:19")
     Restaurant.update_category
   end
-  it 'displays only cafes in the specified postal code' do
-    visit '/restaurants/post_code/LS1'
 
-    expect(page).to have_content(@all_bar_one_1.cafe_name)
-    expect(page).to have_content(@bagel_nash_1.cafe_name)
-    expect(page).to have_content(@barburrito.cafe_name)
-    expect(page).to have_content(@bella_italia.cafe_name)
-    expect(page).to_not have_content(@all_bar_one_2.street_address)
-  end
   it 'displays correct statistics for the post code named' do
-    visit '/restaurants/post_code/LS1'
-
-    expect(PostCode.find_by_filter('LS1', 'post_code').count).to eq(9)
-    expect(PostCode.total_chairs('LS1', 'post_code')).to eq(184)
-    expect(PostCode.total_places('LS1', 'post_code')).to eq(9)
-    expect(PostCode.chairs_pct('LS1', 'post_code')).to eq(56.79)
-    expect(page).to have_content("Black House Grill - 60")
+    visit '/post_codes'
+save_and_open_page
+    expect(Restaurant.find_by_filter('LS1', 'post_code').count).to eq(9)
+    expect(Restaurant.total_chairs('LS1', 'post_code')).to eq(184)
+    expect(Restaurant.total_places('LS1', 'post_code')).to eq(9)
+    expect(Restaurant.chairs_pct('LS1', 'post_code')).to eq(56.79)
   end
 end
